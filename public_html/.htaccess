@@ -31,10 +31,13 @@
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
-# --- Redirect blog.php to blog.html ---
+# --- Clean blog URLs ---
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^blog\.php$ /blog.html [R=301,L]
+  # Redirect old blog.html to blog.php
+  RewriteRule ^blog\.html$ /blog.php [R=301,L]
+  # Redirect old static blog post to dynamic
+  RewriteRule ^blog-local-law-152-liability\.html$ /blog-post.php?slug=local-law-152-liability [R=301,L]
 </IfModule>
 
 # --- Block directory listing ---
