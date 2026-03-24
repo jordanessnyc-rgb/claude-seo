@@ -1,0 +1,51 @@
+# ============================================================
+# Gas Pro Inspectors - .htaccess
+# Security headers, compression, and caching for Hostinger
+# ============================================================
+
+# --- Security Headers ---
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# --- GZIP Compression ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json text/xml application/xml image/svg+xml
+</IfModule>
+
+# --- Browser Caching ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 1 hour"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# --- Clean blog URLs ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Redirect old blog.html to blog.php
+  RewriteRule ^blog\.html$ /blog.php [R=301,L]
+  # Redirect old static blog post to dynamic
+  RewriteRule ^blog-local-law-152-liability\.html$ /blog-post.php?slug=local-law-152-liability [R=301,L]
+</IfModule>
+
+# --- Block directory listing ---
+Options -Indexes
+
+# --- Prevent access to sensitive files ---
+<FilesMatch "\.(md|json)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>
